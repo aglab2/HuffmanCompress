@@ -89,7 +89,6 @@ namespace Huffman
         }
     }
 
-    // TODO: 2 symbols should be defined at start, otherwise not gonna work
     class Tree
     {
         public class DecodeState
@@ -136,6 +135,15 @@ namespace Huffman
             foreach(Symbol symbol in symbols)
             {
                 nodes.Add(new TreeNodeLeaf(symbol));
+            }
+
+            // Special case because merge won't work
+            if (nodes.Count == 1)
+            {
+                root = new TreeNodeInternal();
+                root.next[0] = nodes.First();
+                root.next[1] = new TreeNodeLeaf(new CharSymbol(0, 0)); // TODO: Terrible but I do not care
+                return;
             }
 
             // Create tree from Nodes
